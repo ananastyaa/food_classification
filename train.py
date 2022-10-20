@@ -25,8 +25,8 @@ def preprocess(image):
     return reshaped
 
 
-def load_data():
-    df = pd.read_csv("prepared/train.csv")
+def load_data(path_date):
+    df = pd.read_csv(path_date)
     labels = load_labels(data_frame=df, column_name="label")
     raw_images = load_images(data_frame=df, column_name="filename")
     processed_images = [preprocess(image) for image in raw_images]
@@ -35,12 +35,11 @@ def load_data():
 
 
 def main():
-    train_data, labels = load_data()
+    train_data, labels = load_data("prepared/train.csv")
     sgd = SGDClassifier(max_iter=10)
     trained_model = sgd.fit(train_data, labels)
     dump(trained_model, "model/model.joblib")
 
 
 if __name__ == "__main__":
-    repo_path = Path(__file__).parent.parent
     main()
